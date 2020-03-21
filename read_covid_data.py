@@ -24,18 +24,25 @@ class CovidReader:
         else:
             raise NotImplementedError
 
-    def plot_country_trend(self, country, kind='bar'):
+    def plot_country_trend(self, country, aggregation_type, plot_kind):
         cumulative_cases, new_cases = self.fetch_time_series(country=country)
 
-        max_val = cumulative_cases.max()
-        cumulative_cases.index = list(range(0, len(cumulative_cases)))
+        if aggregation_type == 'cum':
+            plotted_cases = cumulative_cases
+            plt.ylabel('cumulative confirmed COVID-19 cases ')
+        elif aggregation_type == 'new':
+            plotted_cases = new_cases
+            plt.ylabel('new confirmed COVID-19 cases ')
+        else:
+            raise NotImplementedError
 
-        cumulative_cases.plot(kind=kind)
-
+        max_val = plotted_cases.max()
+        plotted_cases.index = list(range(0, len(plotted_cases)))
+        plotted_cases.plot(kind=plot_kind)
         plt.grid(True, linestyle='-', axis='y')
-        plt.xticks(ticks=cumulative_cases.index, labels=[])
+        plt.xticks(ticks=plotted_cases.index, labels=[])
         plt.yticks(ticks=np.arange(0, 1.5 * max_val, step=int((1.5 * max_val)/10)))
-        plt.ylabel('cumulative confirmed COVID-19 cases ')
+
         plt.xlabel('days since first case (01/22/2020)')
         plt.show()
 

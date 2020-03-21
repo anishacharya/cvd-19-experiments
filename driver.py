@@ -9,6 +9,8 @@ def _parse_args():
                         help='Pass Country name')
     parser.add_argument('--p', type=str, default='bar',
                         help='Pass type of plot')
+    parser.add_argument('--a', type=str, default='cum',
+                        help='plot cumulative or new cases. Options: cum, new ')
     args = parser.parse_args()
     return args
 
@@ -20,4 +22,5 @@ if __name__ == '__main__':
 
     # plot country CVD-19 data
     covid_reader.plot_country_trend(country=args.c,
-                                    kind=args.p)
+                                    aggregation_type=args.a,
+                                    plot_kind=args.p)
