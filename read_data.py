@@ -1,6 +1,7 @@
 import config as conf
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 class CovidReader:
@@ -14,19 +15,28 @@ class CovidReader:
         if country is not None:
             filtered_data = self.data.loc[self.data['Country/Region'] == country]
             if state is not None:
-                return filtered_data.loc[self.data['Province/State'] == state]
+                cumulative_cases = filtered_data.loc[self.data['Province/State'] == state]
             else:
-                aggregate = filtered_data.sum(axis=0, skipna=True)[4:-1]
-                return aggregate
+                cumulative_cases = filtered_data.sum(axis=0, skipna=True)[4:-1]
+
+            new_cases = cumulative_cases.diff(1)
+            new_cases[0] = cumulative_cases[0]
+            return cumulative_cases, new_cases
         else:
             raise NotImplementedError
 
 
 if __name__ == '__main__':
     covid_reader = CovidReader(filename=conf.confirmed_covid_jhu_time_series)
-    time_series = covid_reader.fetch_time_series(country='US')
+    cumulative_cases, new_cases = covid_reader.fetch_time_series(country='US')
 
-    time_series.plot(kind='bar')
+    max_val = cumulative_cases.max()
+    cumulative_cases.index = list(range(0, len(cumulative_cases)))
+
+    cumulative_cases.plot(kind='bar')
+    plt.grid(True, linestyle='-', axis='y')
+    plt.xticks(ticks=cumulative_cases.index, labels=[])
+    plt.yticks(ticks=np.arange(0, 1.5 * max_val, step=5000))
     plt.ylabel('cumulative confirmed COVID-19 cases ')
-    plt.xticks([])
+    plt.xlabel('days since first 01/22/2020')
     plt.show()
