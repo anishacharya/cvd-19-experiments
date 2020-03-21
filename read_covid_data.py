@@ -36,7 +36,7 @@ class CovidReader:
         plt.xticks(ticks=cumulative_cases.index, labels=[])
         plt.yticks(ticks=np.arange(0, 1.5 * max_val, step=int((1.5 * max_val)/10)))
         plt.ylabel('cumulative confirmed COVID-19 cases ')
-        plt.xlabel('days since first 01/22/2020')
+        plt.xlabel('days since first case (01/22/2020)')
         plt.show()
 
 
