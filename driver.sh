@@ -6,5 +6,6 @@ git pull
 cd "$curr_dir" || exit
 
 country=${1:-US}
+plot_type=${2:-bar}
 
-python3 driver.py --c "$country"
+python3 driver.py --c "$country" --p "$plot_type"
