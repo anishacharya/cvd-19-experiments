@@ -15,4 +15,4 @@ if __name__ == '__main__':
     args = _parse_args()
     print(args)
     covid_reader = CovidReader(filename=conf.confirmed_covid_jhu_time_series)
-    covid_reader.plot_country_trend(country=args.c)
+    covid_reader.plot_country_trend(country=args.c, kind='bar')

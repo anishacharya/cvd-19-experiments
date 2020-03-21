@@ -24,13 +24,13 @@ class CovidReader:
         else:
             raise NotImplementedError
 
-    def plot_country_trend(self, country):
+    def plot_country_trend(self, country, kind='bar'):
         cumulative_cases, new_cases = self.fetch_time_series(country=country)
 
         max_val = cumulative_cases.max()
         cumulative_cases.index = list(range(0, len(cumulative_cases)))
 
-        cumulative_cases.plot(kind='line')
+        cumulative_cases.plot(kind=kind)
 
         plt.grid(True, linestyle='-', axis='y')
         plt.xticks(ticks=cumulative_cases.index, labels=[])
