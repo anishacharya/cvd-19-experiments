@@ -5,4 +5,6 @@ cd "$curr_dir"'/../COVID-19/' || exit
 git pull
 cd "$curr_dir" || exit
 
-python3 read_data.py
+country=${1:-US}
+
+python3 driver.py --c "$country"
